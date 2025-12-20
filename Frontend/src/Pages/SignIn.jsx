@@ -2,6 +2,7 @@ import React, { useState, useContext,useEffect } from "react";
 import Bg from "../assets/authBg.png"
 import { FaEye } from "react-icons/fa";
 
+
 import { FaEyeSlash } from "react-icons/fa";
 import {useNavigate} from "react-router-dom";
 import { UserDataContext } from "../context/UserContext.jsx";
@@ -33,7 +34,7 @@ function SignIn(){
       console.log("Login Response:", result.data);
 
            setloading(false);
-             navigate("/customize"); // ✅ Login success → next page
+             navigate("/customize"); // Login success → next page
   }catch(err){
     console.log(err);
    seterr(err.response?.data?.message || "Invalid credentials, please try again.");
@@ -81,6 +82,15 @@ function SignIn(){
   }
 </div>
 {err.length>0 && <p className="text-red-500">*{err}</p> }
+
+<p
+  className="text-blue-400 text-sm cursor-pointer self-end"
+  onClick={() => navigate("/forgot-password")}
+>
+  Forgot Password?
+</p>
+
+
 <button className='min-w-[150px] h-[60px]
  mt-[30px] text-black-semibold bg-white
   rounded-full text-[19px]'

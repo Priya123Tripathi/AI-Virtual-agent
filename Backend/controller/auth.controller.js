@@ -93,7 +93,7 @@ export const logOut=async(req,res)=>{
 }
 
 
-// ✅ SEND OTP
+// SEND OTP
 export const sendOtp = async (req, res) => {
   try {
     const { email } = req.body;
@@ -106,7 +106,7 @@ export const sendOtp = async (req, res) => {
     await user.save();
 
     await sendEmail(email, "Your OTP for Password Reset", `Your OTP is ${otp}`);
-    console.log("✅ OTP sent to:", email);
+    console.log(" OTP sent to:", email);
 
     res.json({ msg: "OTP sent successfully! Check your Gmail inbox." });
   } catch (err) {
@@ -117,8 +117,8 @@ export const sendOtp = async (req, res) => {
 // RESET PASSWORD
 export const resetPassword = async (req, res) => {
   try {
-        console.log("📩 Reset Password API called");
-    console.log("🧩 Request Body:", req.body); // 👈 add this line
+        console.log(" Reset Password API called");
+    console.log("Request Body:", req.body); // add this line
     const { email, otp, password } = req.body;
 
     // Step 1: Find user by email

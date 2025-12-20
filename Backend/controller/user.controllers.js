@@ -2,7 +2,7 @@ import uploadOnCloudinary from "../config/cloudinary.js";
 import geminiResponse from "../gemini.js";
 import User from "../model/user.model.js";
 import moment from "moment"; // npm i moment
-console.log("🔥 user.controllers.js LOADED");
+
 
 export const getCurrentUser = async (req, res) => {
   try {
@@ -48,12 +48,12 @@ export const askToAssistant = async (req, res) => {
   try {
     const { command } = req.body;
 
-    // 1️⃣ Validate
+    // Validate
     if (!command || typeof command !== "string" || command.trim() === "") {
       return res.status(400).json({ response: "Command missing" });
     }
 
-    // 2️⃣ Fetch user (ONLY ONCE)
+    // Fetch user (ONLY ONCE)
     const user = await User.findById(req.userId);
     if (!user) {
       return res.status(404).json({ response: "User not found" });
@@ -63,7 +63,7 @@ export const askToAssistant = async (req, res) => {
       user.history = [];
     }
 
-    // 3️⃣ PER-USER RATE LIMIT
+    //  PER-USER RATE LIMIT
     if (
       user.lastGeminiCall &&
       Date.now() - user.lastGeminiCall < 4000
@@ -78,14 +78,14 @@ export const askToAssistant = async (req, res) => {
     // update timestamp
     user.lastGeminiCall = Date.now();
 
-    // 4️⃣ Save command in history
+    //  Save command in history
     user.history.push(command);
     await user.save();
 
     const userName = user.name || "Creator";
     const assistantName = user.AssistantName || "Assistant";
 
-    // 5️⃣ Call Gemini
+    //  Call Gemini
     const result = await geminiResponse(command, assistantName, userName);
 
     if (!result) {
@@ -111,7 +111,7 @@ export const askToAssistant = async (req, res) => {
 
     const type = gemResult.type;
 
-    // 6️⃣ Handle response
+    //  Handle response
     switch (type) {
       case "get-date":
         return res.json({
@@ -158,7 +158,7 @@ export const askToAssistant = async (req, res) => {
     return res.status(500).json({ response: "Ask assistant error" });
   }
 };
-// ✅ HISTORY CLEAR CONTROLLER
+// HISTORY CLEAR CONTROLLER
 export const clearHistory = async (req, res) => {
   try {
     const user = await User.findById(req.userId);
@@ -167,7 +167,7 @@ export const clearHistory = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    user.history = [];          // 🔥 history empty
+    user.history = [];          // history empty
     await user.save();
 
     return res.status(200).json({

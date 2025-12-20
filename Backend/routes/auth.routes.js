@@ -5,7 +5,7 @@ import { signUp,
   resetPassword } from "../controller/auth.controller.js";
 import express from "express";
 const authRouter=express.Router();
-console.log("✅ auth.routes.js loaded");
+console.log("auth.routes.js loaded");
 
 authRouter.post("/signup",signUp);
 authRouter.post("/signin",Login);

@@ -26,7 +26,7 @@ const userSchema=new mongoose.Schema({
         default: ""
     },
 
-    // ✅ Assistant Image URL (cloudinary URL store)
+    // Assistant Image URL (cloudinary URL store)
     AssistantImage: {
         type: String,
         default: ""

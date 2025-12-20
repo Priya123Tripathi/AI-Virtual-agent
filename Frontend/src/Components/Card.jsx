@@ -7,7 +7,7 @@ function Card({ image }) {
     userdata,
     setUserdata,
     BackendImage,
-    setBakendImage,
+    setBackendImage,
     frontendImage,
     setFrontendImage,
     selectedImage,
@@ -25,7 +25,7 @@ function Card({ image }) {
       `}
       onClick={() =>{
             setselectedImage(image)
-         setBakendImage(null)
+         setBackendImage(null)
          setFrontendImage(null)
       }}
     >

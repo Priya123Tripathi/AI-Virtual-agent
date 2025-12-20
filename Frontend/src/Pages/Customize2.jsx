@@ -2,25 +2,28 @@ import React, { useState } from "react";
 import { UserDataContext } from "../context/UserContext";
 import { useContext} from "react";
 import axios from "axios";
+import { IoMdArrowRoundBack } from "react-icons/io";
+import {useNavigate} from "react-router-dom";
 
 
 function Customize2(){
+    const navigate=useNavigate();
     const {userdata,BackendImage,selectedImage,serverUrl,setUserdata}=useContext(UserDataContext);
     const [assistantName,setAssistantName]=useState(userdata?.AssistantName||"");
     const [loading, setloading]=useState(false);
 
     const handleUpdateAssistant = async () => {
-    console.log("✅ Update button clicked");
+    setloading(true)
 
     try {
         const formData = new FormData();
         formData.append("AssistantName", assistantName);
 
-        // ✅ If user uploaded new image → send file
+        //  If user uploaded new image → send file
         if (BackendImage instanceof File) {
             formData.append("AssistantImage", BackendImage);
         } 
-        // ✅ If user selected card → send old cloudinary URL
+        //  If user selected card → send old cloudinary URL
         else {
             formData.append("imageUrl", selectedImage)
         }
@@ -30,15 +33,16 @@ function Customize2(){
             formData,
             { withCredentials: true }
         );
-
-        console.log("✅ Backend Response:", result.data);
+   setloading(false)
+        console.log(" Backend Response:", result.data);
         setUserdata(result.data);
+        navigate("/")
 
     } catch (err) {
-        console.log("❌ ERROR:", err);
+        console.log(" ERROR:", err);
 
         if (err.response) {
-            console.log("❌ Backend Error:", err.response.data);
+            console.log(" Backend Error:", err.response.data);
         }
     }
 };
@@ -47,7 +51,11 @@ function Customize2(){
 
     return(
           <div className='w-full h-[100vh] bg-gradient-to-t from-black to-[#020236] 
-      flex justify-center items-center flex-col p-[20px]'>
+      flex justify-center items-center flex-col p-[20px] relative'>
+
+        <IoMdArrowRoundBack className="absolute top-[30px]
+         left-[30px] text-white w-[25px] h-[25px] cursor-pointer" onClick={()=>{
+navigate("/customize")  }}/>
       <h1 className="text-white text-[30px]
        text-center mb-[40px]">Enter your
      <span className="text-blue-200">Asistant Name</span></h1>

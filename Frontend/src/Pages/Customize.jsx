@@ -3,7 +3,7 @@ import Card from "../Components/Card";
 import React, { useContext, useRef,useEffect } from "react";
 import { UserDataContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
-
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 import image1 from '../assets/image1.png'
 import image2 from '../assets/image2.jpg'
@@ -50,6 +50,11 @@ function Customize() {
   return (
     <div className='w-full h-[100vh] bg-gradient-to-t from-black to-[#020236] 
       flex justify-center items-center flex-col p-[20px]'>
+
+   <IoMdArrowRoundBack className="absolute top-[30px]
+           left-[30px] text-white w-[25px] h-[25px] cursor-pointer" onClick={()=>{
+             console.log("⬅️ Back arrow clicked"); 
+  navigate("/")  }}/>
 
       <h1 className="text-white text-[30px] text-center mb-[40px]">
         Select your <span className="text-red">Assistant</span>

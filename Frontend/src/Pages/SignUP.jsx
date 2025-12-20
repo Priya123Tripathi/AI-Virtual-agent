@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Bg from "../assets/authBg.png"
 import { FaEye } from "react-icons/fa";
 import { useContext } from "react";
+
+
 import { FaEyeSlash } from "react-icons/fa";
 import {useNavigate} from "react-router-dom";
 import { UserDataContext } from "../context/UserContext.jsx";
@@ -78,6 +80,8 @@ import axios from "axios";
   }
 </div>
 {err.length>0 && <p className="text-red-500">*{err}</p> }
+
+
 <button className='min-w-[150px] h-[60px] mt-[30px] text-black-semibold
  bg-white rounded-full text-[19px]' disabled={loading}>{loading?"loading....":"SignUp"}</button>
   <p className='text-[white] text-[18px] cursor-pointer'

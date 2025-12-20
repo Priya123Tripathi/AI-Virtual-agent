@@ -25,27 +25,79 @@ const [selectedImage,setselectedImage]=useState(null);
       {withCredentials:true
 
       })
-      setUserdata(result.data)
+setUserdata(prev => {
+  if (!prev) return result.data;   // 🔥 FIRST LOAD SAFE
+  return {
+    ...prev,
+    ...result.data,
+    history: result.data.history ?? prev.history
+  };
+});
+
       console.log(result.data)
   }catch(err){
   console.log(err);
-  setUserdata(null);
+
   }finally{
     setloading(false);
   }
 };
 
+
+const getGeminiResponse=async (command)=>{
+  try{
+  const result= await axios.post(`${serverUrl}/api/user/asktoassistant`,
+    {command},
+    {withCredentials:true,
+        headers: { "Content-Type": "application/json" },
+    })
+            console.log("✅ Gemini response:", result.data);
+   
+       if (Array.isArray(result.data?.history)) {
+      setUserdata(prev => {
+  if (!prev) return prev;
+  return {
+    ...prev,
+    history: result.data.history
+  };
+});
+       }
+            return result.data
+  }catch(err){
+  console.log(err)
+  
+  }
+}
+
 useEffect(()=>{
 handleCurrentUser()
 },[])
+
+const clearHistory = async () => {
+  try {
+    const res = await axios.delete(
+      `${serverUrl}/api/user/history`,
+      { withCredentials: true }
+    );
+
+    setUserdata(prev => ({
+      ...prev,
+      history: []
+    }));
+  } catch (err) {
+    console.log("Clear history failed", err);
+  }
+};
 
 
 
 
     const value={
-   serverUrl,userdata,setUserdata,BackendImage, setBackendImage
-   ,frontendImage, loading,setFrontendImage,selectedImage,setselectedImage}
-  return (
+   serverUrl,userdata,BackendImage,setUserdata, clearHistory ,setBackendImage
+   ,frontendImage, loading,setFrontendImage,selectedImage,setselectedImage
+  ,getGeminiResponse}
+  
+   return (
 
    <UserDataContext.Provider value={value}>
   {children}

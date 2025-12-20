@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
+import ForgotPassword from "./Pages/ForgotPassword";
 
 import SignUp from "./Pages/SignUP";
 import SignIn from "./Pages/SignIn";
@@ -17,12 +18,13 @@ function App() {
     userdata?.AssistantImage?.trim() !== "";
 
   return (
+ 
     <Routes>
 
       {/* Home */}
       <Route
         path="/"
-         element={<Navigate to="/customize" />}
+         element={hasAssistant?<Home/>:<Navigate to="/customize" />}
         // element={hasAssistant?<Home />:<Navigate to="/customize"  />}
       />
 
@@ -41,14 +43,19 @@ function App() {
       {/* Choose image */}
       <Route
         path="/customize"
-        element={userdata?<Customize />:<Navigate to="/signin"  />}
+        element={userdata?<Customize />:<Navigate to="/signup" />}
       />
 
       {/* Name + Save */}
       <Route
         path="/customize2"
-        element={userdata?<Customize2 />:<Navigate to="/signin" />}
+        element={userdata?<Customize2 />:<Navigate to="/signup" />}
       />
+{/* Forgot Password */}
+<Route
+  path="/forgot-password"
+  element={<ForgotPassword />}
+/>
 
     </Routes>
   );
