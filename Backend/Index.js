@@ -6,10 +6,12 @@ import authRouter from "./routes/auth.routes.js";
 import userRouter from "./routes/user.routes.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import geminiResponse from "./gemini.js";
 
 const app =express();
 const port=process.env.PORT;
 
+app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({
@@ -18,13 +20,15 @@ app.use(cors({
 }
    
 ));
+console.log("GEMINI_API_KEY:", process.env.GEMINI_API_KEY ? "Loaded ✅" : "❌ Missing");
 
-app.use(express.json());
 
 
-app.use((req, res, next) => {
-  console.log("Raw headers:", req.headers.cookie); // shows exactly what the browser sends
-  console.log("Parsed cookies:", req.cookies);
+
+
+ app.use((err, req, res, next) => {
+  console.error('Backend error:', err);
+  res.status(500).json({ error: err.message });
   next();
 });
 
@@ -34,7 +38,8 @@ app.use("/api/user",userRouter);
 
 
 
+
 app.listen(port,()=>{
     connectDb();
-    console.log("server is listening on port");
+    console.log(`server is listening on port:${port}`);
 });

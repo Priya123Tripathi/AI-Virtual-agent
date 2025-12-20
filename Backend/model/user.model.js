@@ -13,6 +13,13 @@ const userSchema=new mongoose.Schema({
         type:String,
         required:true
     },
+    resetOtp: {
+   type: String,
+   },
+ otpExpire: {
+   type: Date,
+ },
+
  
       AssistantName: {
         type: String,
@@ -24,9 +31,10 @@ const userSchema=new mongoose.Schema({
         type: String,
         default: ""
     },
-    history:[
-        {type:String}
-    ]
+    history:  {
+  type: [String],
+  default: [],
+},
 
 },{timestamps:true})//time stamps time batayega whenever new data enter
 

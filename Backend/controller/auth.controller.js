@@ -1,6 +1,9 @@
 import genToken from "../config/token.js";
 import User from "../model/user.model.js";
-import bcrypt from "bcryptjs";   
+import bcrypt from "bcryptjs"; 
+import sendEmail from "../config/sendEmail.js";  
+
+
 //Signup
 export const signUp=async(req,res)=>{
 try{
@@ -65,8 +68,8 @@ if(!isMatch){
    res.cookie("token",token,{
     httpOnly:true,
     maxAge:7*24*60*60*1000,
-     sameSite: "lax", // ✅ must be none for cross-origin
-  secure: false,    // ✅ false for localhost
+     sameSite: "lax", //  must be none for cross-origin
+  secure: false,    //  false for localhost
   path: "/"
    })
        // Remove password from output
@@ -88,3 +91,63 @@ export const logOut=async(req,res)=>{
    console.log(err);
     }
 }
+
+
+// ✅ SEND OTP
+export const sendOtp = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ msg: "User not found" });
+
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    user.resetOtp = otp;
+    user.otpExpire = new Date(Date.now() + 5 * 60 * 1000);
+    await user.save();
+
+    await sendEmail(email, "Your OTP for Password Reset", `Your OTP is ${otp}`);
+    console.log("✅ OTP sent to:", email);
+
+    res.json({ msg: "OTP sent successfully! Check your Gmail inbox." });
+  } catch (err) {
+    console.error("sendOtp error:", err);
+    res.status(500).json({ msg: "Internal Server Error", error: err.message });
+  }
+};
+// RESET PASSWORD
+export const resetPassword = async (req, res) => {
+  try {
+        console.log("📩 Reset Password API called");
+    console.log("🧩 Request Body:", req.body); // 👈 add this line
+    const { email, otp, password } = req.body;
+
+    // Step 1: Find user by email
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ msg: "User not found" });
+    }
+
+    // Step 2: Check OTP expiration
+    if (!user.otpExpire || Date.now() > user.otpExpire) {
+      return res.status(400).json({ msg: "OTP expired. Please request a new one." });
+    }
+
+    //  Step 3: Compare OTP safely (string vs number)
+    if (String(user.resetOtp) !== String(otp)) {
+      return res.status(400).json({ msg: "Invalid OTP" });
+    }
+
+    // Step 4: Hash and save new password
+    user.password = await bcrypt.hash(password, 10);
+    user.resetOtp = undefined;
+    user.otpExpire = undefined;
+    await user.save();
+
+    console.log(" Password updated for:", email);
+    res.json({ msg: "Password updated successfully!" });
+  } catch (err) {
+    console.error("resetPassword error:", err);
+    res.status(500).json({ msg: "Internal Server Error" });
+  }
+};
