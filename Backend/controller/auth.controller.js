@@ -95,6 +95,7 @@ export const logOut=async(req,res)=>{
 
 // SEND OTP
 export const sendOtp = async (req, res) => {
+    console.log("sendOtp API HIT");
   try {
     const { email } = req.body;
     const user = await User.findOne({ email });
