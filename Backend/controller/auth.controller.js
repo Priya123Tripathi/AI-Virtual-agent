@@ -31,8 +31,8 @@ try{
    res.cookie("token",token,{
     httpOnly:true,
     maxAge:7*24*60*60*1000,
-      sameSite: "lax", // must be none
-  secure: false,    // localhost only
+      sameSite: "None", 
+  secure: true,   
   path: "/"
 
    })
@@ -68,8 +68,8 @@ if(!isMatch){
    res.cookie("token",token,{
     httpOnly:true,
     maxAge:7*24*60*60*1000,
-     sameSite: "lax", //  must be none for cross-origin
-  secure: false,    //  false for localhost
+     sameSite: "None", //  must be none for cross-origin
+  secure: true,    //  false for localhost
   path: "/"
    })
        // Remove password from output
