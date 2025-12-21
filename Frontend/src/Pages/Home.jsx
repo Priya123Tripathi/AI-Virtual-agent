@@ -18,7 +18,7 @@ const[AiText,setAiText]=useState("");
 const [menuOpen, setMenuOpen] = useState(false);
 
 const [speaker, setSpeaker] = useState("ai"); 
- console.log("HOME USERDATA 👉", userdata);
+ console.log("HOME USERDATA ", userdata);
   const hasAssistant = Boolean(
     userdata?.AssistantImage || userdata?.AssistantName
   );
@@ -49,7 +49,7 @@ const speak = useCallback((text) => {
 
     const utter = new SpeechSynthesisUtterance(text);
 
-    // ✅ Force English Google voice (best quality)
+    // Force English Google voice (best quality)
     const voice =
       voicesRef.current.find(v =>
         v.lang === "en-IN" && v.name.toLowerCase().includes("google")
@@ -116,10 +116,10 @@ useEffect(() => {
     ) {
       try {
         recognitionRef.current.start();
-        // console.log("🔁 mic restarted by 10-sec checker");
+        // console.log(" mic restarted by 10-sec checker");
       } catch (_) {}
     }
-  }, 10000); // ⏱️ every 10 sec
+  }, 10000); //  every 10 sec
 
   return () => clearInterval(interval);
 }, []);
@@ -224,7 +224,7 @@ recognition.onend = () => {
     navigate("/signin");
   };
 
-  /* ===================== UI (UNCHANGED) ===================== */
+ 
   return (
     <div className="w-full min-h-screen bg-gradient-to-b from-[#020236] via-[#050018] to-black flex items-center justify-center px-4">
    
@@ -276,7 +276,7 @@ recognition.onend = () => {
       
 
  <button
-            className="absolute top-6 right-6 min-w-[125px] h-[50px] mt-[30px] text-black font-semibold bg-white rounded-full flex justify-center items-center  text-[19px]"
+            className="absolute lg:top-6 lg:right-6 top-[10px] right-[10px] min-w-[100px] h-[40px] text-[15px] bg-white text-black font-semibold rounded-full flex justify-center items-center"
             onClick={handleLogout}
           >
             Log Out
