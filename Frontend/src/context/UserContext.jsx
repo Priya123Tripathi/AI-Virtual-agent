@@ -9,11 +9,11 @@ import axios from "axios";
 
 
 function UserContext({children}){
-<<<<<<< HEAD
-const serverUrl="https://ai-virtual-agent-backen.onrender.com";
-=======
-const serverUrl="http://localhost:8000";
->>>>>>> e78b6ae (fix: forgot password + cors + context updated)
+  const serverUrl =
+    import.meta.env.MODE === "development"
+      ? "http://localhost:8000"
+      : "https://ai-virtual-agent-backen.onrender.com";
+
 const[userdata,setUserdata]=useState(null);
   const [loading, setloading] = useState(true);
  const [frontendImage, setFrontendImage]=useState(null);
