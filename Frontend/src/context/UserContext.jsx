@@ -9,7 +9,7 @@ import axios from "axios";
 
 
 function UserContext({children}){
-const serverUrl="https://ai-virtual-backend-5xwd.onrender.com";
+const serverUrl="http://localhost:8000";
 const[userdata,setUserdata]=useState(null);
   const [loading, setloading] = useState(true);
  const [frontendImage, setFrontendImage]=useState(null);
