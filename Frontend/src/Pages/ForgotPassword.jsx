@@ -13,13 +13,18 @@ function ForgotPassword() {
 
   const navigate = useNavigate();
 
+  const baseURL =
+  import.meta.env.MODE === "development"
+    ? "http://localhost:8000"
+    : "https://ai-virtual-agent-backen.onrender.com";
+
   // Step 1: Send OTP
   const sendOtp = async () => {
     setMsg("");
     setLoading(true);
     try {
       const res = await axios.post(
-        "http://localhost:8000/api/auth/send-otp",
+  `${baseURL}/api/auth/send-otp`,
         { email },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -39,8 +44,8 @@ function ForgotPassword() {
     setMsg("");
     setLoading(true);
     try {
-      const res = await axios.post(
-        "http://localhost:8000/api/auth/reset-password",
+const res = await axios.post(
+  `${baseURL}/api/auth/reset-password`,
         { email, otp, password },
         { headers: { "Content-Type": "application/json" } }
       );
