@@ -12,23 +12,24 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 8000;
 
-//  Middlewares
+// Middleware
 app.use(express.json());
 app.use(cookieParser());
 
-//  Allowed origins (local + deployed)
+//  Allowed Origins (local + your actual Render frontend)
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://ai-virtual-agent-front.onrender.com",
-  "https://ai-virtual-agent-frontend-km91.onrender.com"
+  "https://ai-virtual-agent-front.onrender.com", // ✅ your actual deployed frontend
 ];
 
-//  Single CORS setup (no duplication)
+// Single, clean CORS setup
 app.use(
   cors({
     origin: function (origin, callback) {
-      // allow Postman / curl etc.
+      // Allow Postman / curl etc. (no origin)
       if (!origin) return callback(null, true);
+
+      // Allow local + your frontend
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       } else {
@@ -42,15 +43,16 @@ app.use(
   })
 );
 
+console.log(
+  "GEMINI_API_KEY:",
+  process.env.GEMINI_API_KEY ? "Loaded " : " Missing "
+);
 
-
-console.log("GEMINI_API_KEY:", process.env.GEMINI_API_KEY ? "Loaded ✅" : " Missing ❌");
-
-//  Routes
+// Routes
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 
-// Error middleware 
+// Global Error Middleware
 app.use((err, req, res, next) => {
   console.error("Backend error:", err.message);
   if (err.message.includes("CORS")) {
@@ -59,7 +61,7 @@ app.use((err, req, res, next) => {
   return res.status(500).json({ error: "Internal Server Error" });
 });
 
-//  server
+// Start Server
 app.listen(port, async () => {
   await connectDb();
   console.log(`Server running on port ${port}`);
