@@ -10,7 +10,7 @@ const genToken=(userId)=>{
       process.env.JWT_SECRET,
       {expiresIn:"10d"}
     );
-    console.log("Generated token:", token);
+ 
     return token
 
 }catch(error){

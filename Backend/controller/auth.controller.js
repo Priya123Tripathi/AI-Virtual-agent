@@ -117,8 +117,7 @@ export const sendOtp = async (req, res) => {
 // RESET PASSWORD
 export const resetPassword = async (req, res) => {
   try {
-        console.log(" Reset Password API called");
-    console.log("Request Body:", req.body); // add this line
+      
     const { email, otp, password } = req.body;
 
     // Step 1: Find user by email
