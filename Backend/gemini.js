@@ -90,7 +90,7 @@ Now your userInput is: ${command}
           "Content-Type": "application/json",
           "x-goog-api-key": apiKey,
         },
-        timeout: 20000,
+        timeout: 60000,
       }
     );
         console.log(" Gemini API returned:");
