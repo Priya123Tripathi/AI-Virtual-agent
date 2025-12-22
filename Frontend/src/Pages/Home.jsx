@@ -206,7 +206,7 @@ recognition.onend = () => {
     if (isVoiceActiveRef.current) return;
 
     isVoiceActiveRef.current = true;
-    await speak("Voice activated. hello.. how can i help you.... i am a virtual assistant designed by priya Tripathi", "hi");
+    await speak("Voice activated. hello.. how can i help you.... i am a virtual assistant designed by priya", "hi");
 
     try {
       recognitionRef.current.start();
@@ -276,7 +276,7 @@ recognition.onend = () => {
       
 
  <button
-            className="absolute lg:top-6 lg:right-6 top-[10px] right-[10px] min-w-[100px] h-[40px] text-[15px] bg-white text-black font-semibold rounded-full flex justify-center items-center"
+            className="hidden lg:flex absolute lg:top-6 lg:right-6 top-[10px] right-[10px] min-w-[100px] h-[40px] text-[15px] bg-white text-black font-semibold rounded-full flex justify-center items-center"
             onClick={handleLogout}
           >
             Log Out

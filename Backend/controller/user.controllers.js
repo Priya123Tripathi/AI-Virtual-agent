@@ -7,7 +7,7 @@ import moment from "moment"; // npm i moment
 export const getCurrentUser = async (req, res) => {
   try {
     const userId = req.userId;
-    console.log("getCurrentUser userId:", userId);
+   
     const user = await User.findById(userId).select("-password");
     if (!user) {
       return res.status(404).json({ message: "user not found" });
@@ -43,10 +43,12 @@ export const updateAssistant = async (req, res) => {
   }
 };
 export const askToAssistant = async (req, res) => {
-  console.log("asktoassistant route hit hua hai!");
+  console.log(" askToAssistant route hit — command received:", req.body.command);
+
 
   try {
     const { command } = req.body;
+      
 
     // Validate
     if (!command || typeof command !== "string" || command.trim() === "") {
@@ -55,6 +57,7 @@ export const askToAssistant = async (req, res) => {
 
     // Fetch user (ONLY ONCE)
     const user = await User.findById(req.userId);
+        
     if (!user) {
       return res.status(404).json({ response: "User not found" });
     }
@@ -81,12 +84,13 @@ export const askToAssistant = async (req, res) => {
     //  Save command in history
     user.history.push(command);
     await user.save();
-
+   
     const userName = user.name || "Creator";
     const assistantName = user.AssistantName || "Assistant";
 
     //  Call Gemini
     const result = await geminiResponse(command, assistantName, userName);
+
 
     if (!result) {
       return res.status(502).json({

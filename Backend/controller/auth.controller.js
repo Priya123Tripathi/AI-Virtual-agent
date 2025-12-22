@@ -2,6 +2,7 @@ import genToken from "../config/token.js";
 import User from "../model/user.model.js";
 import bcrypt from "bcryptjs"; 
 import sendEmail from "../config/sendEmail.js";  
+const isProd = process.env.NODE_ENV === "production";
 
 
 //Signup
@@ -31,8 +32,8 @@ try{
    res.cookie("token",token,{
     httpOnly:true,
     maxAge:7*24*60*60*1000,
-      sameSite: "None", 
-  secure: true,   
+      sameSite: isProd ? "None" : "Lax",
+  secure: isProd,   
   path: "/"
 
    })
@@ -68,8 +69,8 @@ if(!isMatch){
    res.cookie("token",token,{
     httpOnly:true,
     maxAge:7*24*60*60*1000,
-     sameSite: "None", //  must be none for cross-origin
-  secure: true,    //  false for localhost
+     sameSite: isProd ? "None" : "Lax", 
+  secure: isProd,   
   path: "/"
    })
        // Remove password from output
@@ -85,7 +86,11 @@ return res.status(500).json({message:`login error ${err}`});
 
 export const logOut=async(req,res)=>{
     try{
-     res.clearCookie("token");
+     res.clearCookie("token", {
+  sameSite: isProd ? "None" : "Lax",
+  secure:  isProd,
+  path: "/"
+});
      return res.status(200).json({message:"logout successfully"})
     }catch(err){
    console.log(err);
@@ -106,7 +111,14 @@ export const sendOtp = async (req, res) => {
     user.otpExpire = new Date(Date.now() + 5 * 60 * 1000);
     await user.save();
 
-    await sendEmail(email, "Your OTP for Password Reset", `Your OTP is ${otp}`);
+   try {
+  await sendEmail(email, "Your OTP for Password Reset", `Your OTP is ${otp}`);
+} catch (mailErr) {
+  return res.status(500).json({
+    msg: "Email service temporarily down, try again later"
+  });
+}
+
     console.log(" OTP sent to:", email);
 
     res.json({ msg: "OTP sent successfully! Check your Gmail inbox." });
@@ -120,6 +132,10 @@ export const resetPassword = async (req, res) => {
   try {
       
     const { email, otp, password } = req.body;
+
+    if (password.length < 6) {
+  return res.status(400).json({ msg: "Password too short" });
+}
 
     // Step 1: Find user by email
     const user = await User.findOne({ email });
@@ -137,6 +153,7 @@ export const resetPassword = async (req, res) => {
     if (String(user.resetOtp) !== String(otp)) {
       return res.status(400).json({ msg: "Invalid OTP" });
     }
+
 
     // Step 4: Hash and save new password
     user.password = await bcrypt.hash(password, 10);
