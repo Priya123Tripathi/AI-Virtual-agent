@@ -12,7 +12,7 @@ dotenv.config();
 const geminiResponse = async (command, assistantName = "Assistant", userName = "Creator") => {
   try {
     
-
+    console.log("Gemini key loaded:", !!process.env.GEMINI_API_KEY);
 
     const apiUrl =
       process.env.GEMINI_API_URL ||
