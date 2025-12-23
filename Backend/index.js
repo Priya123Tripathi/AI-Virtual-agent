@@ -19,7 +19,8 @@ app.use(cookieParser());
 //  Allowed Origins (local + your actual Render frontend)
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://ai-virtual-agent-front.onrender.com", // ✅ your actual deployed frontend
+  "https://ai-virtual-agent-front.onrender.com",
+  "https://ai-virtual-agent-f.onrender.com", 
 ];
 
 // Single, clean CORS setup
