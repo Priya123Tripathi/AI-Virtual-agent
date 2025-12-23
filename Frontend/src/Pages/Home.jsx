@@ -71,38 +71,35 @@ const speak = useCallback((text) => {
 
 
   /* ===================== COMMAND HANDLER ===================== */
-  const handleCommand = async (data, lang) => {
-    const { type, userInput = "", response = "" } = data;
-    let url = null;
+ const handleCommand = async (data, lang) => {
+  const { type, userInput = "", response = "" } = data;
+  let url = null;
 
-    if (type === "google-search") {
-      url = `https://www.google.com/search?q=${encodeURIComponent(userInput)}`;
-    } else if (type === "calculator-open") {
-      url = "https://www.google.com/search?q=calculator";
-    } else if (type === "instagram-open") {
-      url = "https://www.instagram.com/";
-    } else if (type === "facebook-open") {
-      url = "https://www.facebook.com/";
-    } else if (type === "weather-show") {
-      url = "https://www.google.com/search?q=weather";
-    } else if (type === "youtube-search" || type === "youtube_play") {
-      url = `https://www.youtube.com/results?search_query=${encodeURIComponent(
-        userInput
-      )}`;
+  // Exact types match karein jo Gemini bhej raha hai
+  if (type === "google-search") {
+    url = `https://www.google.com/search?q=${encodeURIComponent(userInput)}`;
+  } else if (type === "calculator-open") {
+    url = "https://www.google.com/search?q=calculator";
+  } else if (type === "instagram-open") {
+    url = "https://www.instagram.com/";
+  } else if (type === "facebook-open") {
+    url = "https://www.facebook.com/";
+  } else if (type === "weather-show") {
+    url = `https://www.google.com/search?q=weather+${encodeURIComponent(userInput)}`;
+  } else if (type === "youtube-search" || type === "youtube-play") {
+    url = `https://www.youtube.com/results?search_query=${encodeURIComponent(userInput)}`;
+  }
+
+  if (url) {
+    // document.createElement ki jagah window.open use karein
+    const win = window.open(url, "_blank");
+    if (!win) {
+      alert("Please allow Pop-ups in your browser to open links!");
     }
+  }
 
-    if (url) {
-      const a = document.createElement("a");
-      a.href = url;
-      a.target = "_blank";
-      a.rel = "noopener noreferrer";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    }
-
-    await speak(response, lang);
-  };
+  await speak(response, lang);
+};
 
 
 
