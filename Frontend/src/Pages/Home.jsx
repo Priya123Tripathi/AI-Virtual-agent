@@ -39,7 +39,7 @@ const voicesRef = useRef([]);
   window.speechSynthesis.onvoiceschanged = loadVoices;
 }, []);
 
-  /* ===================== SPEAK (Hindi + English) ===================== */
+  /*  SPEAK (Hindi + English)  */
 const speak = useCallback((text) => {
   return new Promise((resolve) => {
     if (!text || !synthRef.current) return resolve();
@@ -70,7 +70,7 @@ const speak = useCallback((text) => {
 }, []);
 
 
-  /* ===================== COMMAND HANDLER ===================== */
+  /*COMMAND HANDLER */
  const handleCommand = async (data, lang) => {
   const { type, userInput = "", response = "" } = data;
   let url = null;
