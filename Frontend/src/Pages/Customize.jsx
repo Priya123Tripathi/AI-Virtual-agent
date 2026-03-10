@@ -48,20 +48,20 @@ function Customize() {
   };
 
   return (
-    <div className='w-full h-[100vh] bg-gradient-to-t from-black to-[#020236] 
-      flex justify-center items-center flex-col p-[20px]'>
+     <div className='w-full min-h-screen bg-gradient-to-t from-black to-[#020236] 
+flex flex-col items-center justify-center px-4 py-8'>
 
    <IoMdArrowRoundBack className="absolute top-[30px]
            left-[30px] text-white w-[25px] h-[25px] cursor-pointer" onClick={()=>{
              console.log("⬅️ Back arrow clicked"); 
   navigate("/")  }}/>
 
-      <h1 className="text-white text-[30px] text-center mb-[40px]">
+      <h1 className="text-white text-2xl sm:text-3xl md:text-4xl text-center mb-8">
         Select your <span className="text-red">Assistant</span>
       </h1>
 
-      <div className="w-[90%] max-w-[60%] flex justify-center items-center flex-wrap gap-[20px]">
-
+<div className="w-full max-w-5xl grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 place-items-center">
+    
         <Card image={image1} />
         <Card image={image2} />
         <Card image={image3} />
@@ -73,11 +73,14 @@ function Customize() {
 
         {/* Upload Card */}
         <div
-          className="w-[80px] h-[140px] lg:w-[150px] lg:h-[250px]
-            bg-[#030326] border-2 border-[#0000ff66]
-            rounded-2xl overflow-hidden hover:shadow-2xl hover:shadow-blue-950
-            cursor-pointer hover:border-4 hover:border-white
-            flex justify-center items-center"
+          className="w-[80px] h-[120px] 
+sm:w-[100px] sm:h-[150px] 
+md:w-[120px] md:h-[180px] 
+lg:w-[150px] lg:h-[230px]
+bg-[#030326] border-2 border-[#0000ff66]
+rounded-2xl overflow-hidden hover:shadow-2xl hover:shadow-blue-950
+cursor-pointer hover:border-4 hover:border-white
+flex justify-center items-center"
           onClick={() => {
             inputImage.current.click();
             setselectedImage("input");

@@ -92,10 +92,7 @@ const speak = useCallback((text) => {
 
   if (url) {
     // document.createElement ki jagah window.open use karein
-    const win = window.open(url, "_blank");
-    if (!win) {
-      alert("Please allow Pop-ups in your browser to open links!");
-    }
+    window.location.href = url;
   }
 
   await speak(response, lang);

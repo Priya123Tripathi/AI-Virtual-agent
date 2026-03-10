@@ -2,13 +2,7 @@ import axios from "axios";
 import dotenv from "dotenv";
 dotenv.config();
 
-/**
- * geminiResponse(command, assistantName, userName)
- * - Sends prompt to Gemini-like endpoint and expects a JSON-only string back.
- * - Returns a parsed object on success, or a consistent error object on failure.
- *
- * NOTE: Run this on server-side only (do not expose API keys in frontend).
- */
+
 const geminiResponse = async (command, assistantName = "Assistant", userName = "Creator") => {
   try {
     
@@ -114,7 +108,7 @@ if (!text) {
   return { type: "error", response: "Empty response from Gemini." };
 }
 
-// 🔹 Gemini JSON sometimes comes inside triple backticks like ```json ... ```
+//  Gemini JSON sometimes comes inside triple backticks like ```json ... ```
 let cleanedText = text
   .replace(/^```json/i, "") // remove starting ```json
   .replace(/^```/, "")      // remove starting ```
